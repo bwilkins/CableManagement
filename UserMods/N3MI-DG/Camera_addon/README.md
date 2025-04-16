@@ -43,6 +43,6 @@ This addon is suitable for 250, 300 and 350 spec Voron Stealthchangers.
 - Sandwich the camera between the upper cover and camera mount and then install the 2 M2x10 self tapping screws from the top.
 
 
-### Example image on a 350 Spec Voron
+### Example image on a 300 Spec Voron
 
 ![Example](images/6.jpg)
