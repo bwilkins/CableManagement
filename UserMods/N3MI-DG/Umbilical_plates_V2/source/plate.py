@@ -10,11 +10,6 @@ from plate_sketches import (
 )
 
 
-### TODO
-# Use thread core for cleanout
-# Make sure dock is in correct Y position.
-# Clean all the files
-
 def makeBodies(printer="voron", logo=True, panel_thick=4):
     extrusion_size        = profiles[printer]['extrusion_size']
     panel_cutout          = profiles[printer]['panel_cutout']
@@ -173,8 +168,6 @@ def makeBodies(printer="voron", logo=True, panel_thick=4):
         ]).rect(panel_cutout[0]-tol, panel_cutout[1]).extrude(-(outer_thick+panel_thick+0.5))
 
         # Add clearance for extrusion
-        # .faces(">Z[-2]").item(0).workplane(centerOption="CenterOfBoundBox")
-        # .rect(panel_cutout[0]-tol, 0.5+tol).extrude(-(20-outer_panel_z_offset+tol+tol), "cut")
         .faces(">Y").workplane(centerOption="CenterOfBoundBox", offset=-(outer_thick+panel_thick)+tol)
         .pushPoints([(0, outer_height/2-extrusion_size/2)])
         .rect(panel_cutout[0]+outer_panel_overlap_x*2, extrusion_size+tol*2).extrude(-1, "cut")
@@ -362,33 +355,6 @@ def makeBodies(printer="voron", logo=True, panel_thick=4):
     else:
         logo_insert = None
 
-
-
-
-
-
-    # Add cable channel
-    # outer_plate = (
-    #     outer_plate
-    #     .cut(
-    #         cq.Workplane()
-    #         .box(10, (outer_thick+panel_thick)*2, 6)
-    #         .faces("<X").workplane(centerOption="CenterOfBoundBox").pushPoints([((outer_thick+panel_thick)/2, 0)]).rect(outer_thick+panel_thick, 2.5).extrude(1.2)
-    #         .faces(">X").workplane(centerOption="CenterOfBoundBox").pushPoints([(-(outer_thick+panel_thick)/2, 0)]).rect(outer_thick+panel_thick, 2.5).extrude(1.2)
-    #         .rotate((0, 0, 0), (1, 0, 0), -35)
-    #         .translate((0, 0, port_z_offset+12))
-    #         .edges().fillet(0.5)
-    #     )
-    # )
-
-    # face_plate = (
-    #     face_plate
-    #     .faces("<Y").workplane(centerOption="CenterOfBoundBox").pushPoints([(0, inner_height/2+2)]).polygon(6, 12).extrude(-inner_thick, "cut")
-    #     .faces("<Y").edges(cq.NearestToPointSelector((2, 0, inner_height/2))).chamfer(0.4)
-    #     .faces("<Y").edges(cq.NearestToPointSelector((-2, 0, inner_height/2))).chamfer(0.4)
-    #     .faces("<Y").edges(cq.NearestToPointSelector((0, 0, inner_height/2-4))).chamfer(0.4)
-    # )
-
     return(outer_plate, face_plate, logo_insert, hex_small)
 
 
@@ -409,8 +375,8 @@ def makePlate(outer_plate, face_plate, printer="voron", printer_size=300, tool_c
     inner_thick    = profiles[printer]['inner_thick']
     outer_thick    = profiles[printer]['outer_thick']
     port_length    = profiles[printer]['port_length']
-    port_angle     = profiles[printer]['port_angle']
-    port_z_offset  = profiles[printer]['port_z_offset']
+    port_angle     = profiles[printer]['port_angle'] if port_type == "TPU" else 66
+    port_z_offset  = profiles[printer]['port_z_offset'] if port_type == "TPU" else -8
     frame_deadzone = profiles[printer]['frame_deadzone']
     back_centers   = profiles[printer]['back_centers_logo' if logo else 'back_centers']
     frame_x_width  = frames[printer_size][0]
@@ -568,11 +534,21 @@ def makePlate(outer_plate, face_plate, printer="voron", printer_size=300, tool_c
                 .translate((0, 11.2, port_length+1))
             )
 
+            bowden = bowden.union(
+                cq.Workplane()
+                .circle(5.3).extrude(port_length*4)
+                .translate((0, 3, -port_length*4))
+                .faces(">Z").workplane(centerOption="CenterOfBoundBox").pushPoints([(0, -1.5)]).rect(10.6, 3).extrude(-port_length*4)
+                .faces(">Z").chamfer(2.5)
+            )
+
+            screw_offsets = [1.0, 1.8, 2.5, 2.5, 1.8, 1.0]
+
             screw_point = (
                 cq.Workplane("XZ")
                 .circle(4.7/2)
                 .extrude(5.63+4.5)
-                .translate((0, 0, -(port_length+outer_thick-0.5)))
+                .translate((0, 0, -(port_length+outer_thick-(screw_offsets[tool]))))
                 .rotate((0, 0, 0), (0, 0, 1), 45 if dock_angle < 0 else -45)
             )
 
