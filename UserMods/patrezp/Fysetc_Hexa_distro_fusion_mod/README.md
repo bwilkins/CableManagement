@@ -8,4 +8,5 @@ Rest of stuff needed to build FannyPack
 
 ### Credits
 [DraftShift Design] (https://github.com/DraftShift) for the original FannyPack
+
 [Fysetc] (https://github.com/FYSETC/Hexa_Distro_Fusion) for releasing the drawings for the board
