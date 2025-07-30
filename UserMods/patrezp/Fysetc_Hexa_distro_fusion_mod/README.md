@@ -3,6 +3,7 @@ I had to widen (by 15mm to each side) the existing base, cover, PTFE ramps and c
 
 ## BOM
 4x voron heatset inserts
+
 Rest of stuff needed to build FannyPack
 
 ### Credits
