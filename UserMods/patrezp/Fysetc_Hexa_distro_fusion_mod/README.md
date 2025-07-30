@@ -1,5 +1,6 @@
 # Fysetc Hexa distro fusion holder for StealthChanger
 ![](images/hexa_distro_fusion.jpg)
+
 I had to widen (by 15mm to each side) the existing base, cover, PTFE ramps and cover ramp for n3mi's umbilical plates, as this board is really big and it could not fit the existing FannyPack.
 
 ## BOM
