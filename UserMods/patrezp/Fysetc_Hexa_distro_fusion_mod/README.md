@@ -1,6 +1,3 @@
-# Still work in progress, will update with files once I solve the problem of USBC cables not fitting in there
-
-
 # Fysetc Hexa distro fusion holder for StealthChanger
 ![](images/hexa_distro_fusion.jpg)
 
