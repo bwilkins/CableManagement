@@ -614,24 +614,4 @@ def makePlate(outer_plate, face_plate, printer="voron", printer_size=300, tool_c
 
     return(outer_plate, face_plate, dock_positions)
 
-
-
-_outer_plate, _face_plate, logo_insert, hex_small = makeBodies()
-PG7Thread = makePG7Thread()
-outer_plate, face_plate, dock_positions = makePlate(
-    _outer_plate, 
-    _face_plate, 
-    printer='voron', 
-    printer_size=350, 
-    tool_count=6, 
-    dock_width=60,
-    logo=True, 
-    port_pos='split', 
-    port_type='THREAD',
-    thread_negative=PG7Thread,
-    mount_rail="BOTTOM"
-)
-
-show_object(outer_plate)
-show_object(face_plate)
  
